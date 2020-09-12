@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import NewSingle from '../NewSingle/NewSingle';
 
 const News = () => {
@@ -14,12 +15,9 @@ const News = () => {
       .catch(error => console.log('error: ', error));
   }, []);
 
-  console.log('News', news);
+  const renderItem = () => news.map(item => <NewSingle key={item.url} item={item}></NewSingle>);
 
-  const renderItem = () =>
-    news.map(item => <NewSingle key={item.publishedAt} item={item}></NewSingle>);
-
-  return <ul>{renderItem()}</ul>;
+  return <div className="row">{renderItem()}</div>;
 };
 
 export default News;
