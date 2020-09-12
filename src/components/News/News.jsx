@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import NewSingle from '../NewSingle/NewSingle';
+import { apiKey, baseUrl } from '../../constants/URL';
 
-const News = () => {
+const News = ({ value: { type, query } }) => {
   const [news, setNews] = useState([]);
 
   useEffect(() => {
-    const url =
-      'http://newsapi.org/v2/everything?q=bitcoin&from=2020-08-12&sortBy=publishedAt&apiKey=33af02ae673140ccab96f444c210a391';
+    const url = `${baseUrl}${type}?${query}&apiKey=${apiKey}`;
 
     fetch(url)
       .then(response => response.json())
-      .then(data => setNews(data.articles))
+      .then(({ articles }) => setNews(articles))
       .catch(error => console.log('error: ', error));
-  }, []);
+  }, [query, type]);
 
-  const renderItem = () => news.map(item => <NewSingle key={item.url} item={item}></NewSingle>);
+  const renderItem = useMemo(() => news.map(item => <NewSingle key={item.url} item={item} />), [
+    news,
+  ]);
 
-  return <div className="row">{renderItem()}</div>;
+  return <div className="row">{renderItem}</div>;
 };
 
 export default News;
