@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import News from './News/News';
 
 function App() {
   return (
@@ -6,6 +7,7 @@ function App() {
       <header className="App-header">
         <h1>My feed</h1>
       </header>
+      <News></News>
     </div>
   );
 }
