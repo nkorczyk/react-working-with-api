@@ -3,16 +3,18 @@ import axios from 'axios';
 
 import { apiKey, baseUrl } from '../../constants/URL';
 import SingleSide from '../SingleSide/SingleSide';
+import Error from '../Error/Error';
 
 const SideNews = ({ value: { type, query } }) => {
   const [sideNews, setSideNews] = useState([]);
+  const [error, setError] = useState(false);
   const url = `${baseUrl}${type}?${query}&apiKey=${apiKey}`;
 
   useEffect(() => {
     axios
       .get(url)
       .then(({ data: { articles } }) => setSideNews(articles))
-      .catch(error => console.log('error: ', error));
+      .catch(() => setError(true));
   }, [url]);
 
   const renderItem = useMemo(
@@ -20,7 +22,7 @@ const SideNews = ({ value: { type, query } }) => {
     [sideNews],
   );
 
-  return <div>{renderItem}</div>;
+  return error ? <Error /> : <div>{renderItem}</div>;
 };
 
 export default SideNews;
